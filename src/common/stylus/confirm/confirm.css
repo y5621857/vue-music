@@ -1,0 +1,126 @@
+.confirm {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 998;
+  background-color: $color-background-d;
+}
+.confirm.confirm-fade-enter-active {
+  animation: confirm-fadein 0.3s;
+}
+.confirm.confirm-fade-enter-active .confirm-content {
+  animation: confirm-zoom 0.3s;
+}
+.confirm .confirm-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+.confirm .confirm-wrapper .confirm-content {
+  width: 270px;
+  border-radius: 13px;
+  background: $color-highlight-background;
+}
+.confirm .confirm-wrapper .confirm-content .text {
+  padding: 19px 15px;
+  line-height: 22px;
+  text-align: center;
+  font-size: $font-size-large;
+  color: $color-text-l;
+}
+.confirm .confirm-wrapper .confirm-content .operate {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: $font-size-large;
+}
+.confirm .confirm-wrapper .confirm-content .operate .operate-btn {
+  flex: 1;
+  line-height: 22px;
+  padding: 10px 0;
+  border-top: 1px solid $color-background-d;
+  color: $color-text-d;
+}
+.confirm .confirm-wrapper .confirm-content .operate .operate-btn.left {
+  border-right: 1px solid $color-background-d;
+}
+@-moz-keyframes confirm-fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes confirm-fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes confirm-fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes confirm-fadein {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-moz-keyframes confirm-zoom {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@-webkit-keyframes confirm-zoom {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@-o-keyframes confirm-zoom {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes confirm-zoom {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

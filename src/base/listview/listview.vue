@@ -1,0 +1,171 @@
+<template>
+  <scroll ref="listview"
+          class="listview"
+          :data="data"
+          :listenScroll="listenScroll"
+          :probeType="probeType"
+          @scroll="scroll">
+    <ul>
+      <li v-for="group in data" class="list-group" ref="listGroup">
+        <h2 class="list-group-title">{{group.title}}</h2>
+        <ul>
+          <li v-for="item in group.items" class="list-group-item" @click="selectItem(item)">
+            <img v-lazy="item.avatar" alt="歌手" class="avatar">
+            <span class="name">{{item.name}}</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <div class="list-shortcut" @touchstart="onShortcutTouchStart" @touchmove.stop.prevent="onShortcutTouchMove">
+      <ul>
+        <li v-for="(item, index) in shortcutList"
+            class="item"
+            :class="{current:index===currentIndex}"
+            :data-index="index">
+          {{item}}
+        </li>
+      </ul>
+    </div>
+    <div class="list-fixed" v-show="scrollY<0" ref="fixedTop">
+      <h1 class="fixed-title">{{fixedTitle}}</h1>
+    </div>
+    <div class="loading-container" v-show="!data.length">
+      <loading></loading>
+    </div>
+  </scroll>
+</template>
+
+<script type="text/ecmascript-6">
+  import Loading from 'base/loading/loading'
+  import Scroll from 'base/scroll/scroll'
+  import {getData} from 'common/js/dom'
+
+  const ANCHOR_HEIGHT = 18
+  const TITLE_HEIGHT = 30
+
+  export default {
+    created () {
+      this.touch = {}
+      this.listenScroll = true
+      this.listHeight = []
+      this.probeType = 3
+    },
+    data () {
+      return {
+        scrollY: -1,
+        currentIndex: 0,
+        diff: -1
+      }
+    },
+    props: {
+      data: {
+        type: Array,
+        default: []
+      }
+    },
+    components: {
+      Scroll,
+      Loading
+    },
+    computed: {
+      shortcutList () {
+        return this.data.map((group) => {
+          return group.title.substr(0, 1)
+        })
+      },
+      fixedTitle () {
+        return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
+      }
+    },
+    methods: {
+      onShortcutTouchStart (e) {
+        let anchorIndex = getData(e.target, 'index')
+        let firstTouch = e.touches[0]
+        this.touch.y1 = firstTouch.pageY
+        this.touch.anchorIndex = anchorIndex
+        this._scrollTo(anchorIndex)
+      },
+      onShortcutTouchMove (e) {
+        let firstTouch = e.touches[0]
+        this.touch.y2 = firstTouch.pageY
+        let delta = (this.touch.y2 - this.touch.y1) / ANCHOR_HEIGHT | 0
+        let anchorIndex = parseInt(this.touch.anchorIndex) + parseInt(delta)
+        this._scrollTo(anchorIndex)
+      },
+      refresh () {
+        this.$refs.listview.refresh()
+      },
+      scroll (pos) {
+        this.scrollY = pos.y
+      },
+      selectItem (item) {
+        this.$emit('select', item)
+      },
+      _scrollTo (index) {
+        if (!index && index !== 0) {
+          return
+        }
+
+        if (index < 0) {
+          index = 0
+        } else if (index > this.listHeight.length - 2) {
+          index = this.listHeight.length - 2
+        }
+
+        this.$refs.listview.scrollToElement(this.$refs.listGroup[index], 300)
+      },
+      _calculateHeight () {
+        this.listHeight = []
+        const list = this.$refs.listGroup
+        let height = 0
+        this.listHeight.push(height)
+        for (let i = 0; i < list.length; i++) {
+          let item = list[i]
+          height += item.clientHeight
+          this.listHeight.push(height)
+        }
+      }
+    },
+    watch: {
+      data () {
+        setTimeout(() => {
+          this._calculateHeight()
+        }, 30)
+      },
+      scrollY (newY) {
+        const listHeight = this.listHeight
+
+        if (newY > 0) {
+          this.currentIndex = 0
+          return
+        }
+
+        for (let i = 0; i < listHeight.length - 1; i++) {
+          let height1 = listHeight[i]
+          let height2 = listHeight[i + 1]
+
+          if (!height2 || (-newY >= height1 && -newY < height2)) {
+            this.currentIndex = i
+            this.diff = height2 + newY
+            return
+          }
+        }
+
+        this.currentIndex = listHeight.length - 2
+      },
+      diff (newVal) {
+        let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+        if (this.fixedTop === fixedTop) {
+          return
+        }
+        this.fixedTop = fixedTop
+        this.$refs.fixedTop.style.transform = 'translate3d(0,' + fixedTop + 'px,0)'
+      }
+    }
+  }
+</script>
+
+<style scoped lang="stylus" rel="stylesheet/stylus">
+  @import "~common/stylus/variable";
+  @import "~common/stylus/listview/listview";
+</style>

@@ -1,0 +1,32 @@
+.suggest {
+  height: 100%;
+  overflow: hidden;
+}
+.suggest .suggest-list {
+  padding: 0 30px;
+}
+.suggest .suggest-list .suggest-item {
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+}
+.suggest .suggest-list .icon {
+  flex: 0 0 30px;
+  width: 30px;
+}
+.suggest .suggest-list .icon [class^="icon-"] {
+  font-size: 14px;
+  color: $color-text-d;
+}
+.suggest .suggest-list .name {
+  flex: 1;
+  font-size: $font-size-medium;
+  color: $color-text-d;
+  overflow: hidden;
+}
+.suggest .no-result-wrapper {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+}
