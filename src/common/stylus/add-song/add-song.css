@@ -1,0 +1,73 @@
+.add-song {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  z-index: 200;
+  background: $color-background;
+}
+.add-song.slide-enter-active,
+.add-song.slide-leave-active {
+  transition: all 0.3s;
+}
+.add-song.slide-enter,
+.add-song.slide-leave-to {
+  transform: translate3d(100%, 0, 0);
+}
+.add-song .header {
+  position: relative;
+  height: 44px;
+  text-align: center;
+}
+.add-song .header .title {
+  line-height: 44px;
+  font-size: $font-size-large;
+  color: $color-text;
+}
+.add-song .header .close {
+  position: absolute;
+  top: 0;
+  right: 8px;
+}
+.add-song .header .close .icon-close {
+  display: block;
+  padding: 12px;
+  font-size: 20px;
+  color: $color-theme;
+}
+.add-song .search-box-wrapper {
+  margin: 20px;
+}
+.add-song .shortcut .list-wrapper {
+  position: absolute;
+  top: 165px;
+  bottom: 0;
+  width: 100%;
+}
+.add-song .shortcut .list-wrapper .list-scroll {
+  height: 100%;
+  overflow: hidden;
+}
+.add-song .shortcut .list-wrapper .list-scroll .list-inner {
+  padding: 20px 30px;
+}
+.add-song .search-result {
+  position: fixed;
+  top: 124px;
+  bottom: 0;
+  width: 100%;
+}
+.add-song .tip-title {
+  text-align: center;
+  padding: 18px 0;
+  font-size: 0;
+}
+.add-song .tip-title .icon-ok {
+  font-size: $font-size-medium;
+  color: $color-theme;
+  margin-right: 4px;
+}
+.add-song .tip-title .text {
+  font-size: $font-size-medium;
+  color: $color-text;
+}

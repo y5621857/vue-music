@@ -43,7 +43,8 @@
   import Confirm from 'base/confirm/confirm'
   import Scroll from 'base/scroll/scroll'
   import {mapActions, mapGetters} from 'vuex'
-  import {playListMixin} from 'common/js/mixin'
+  import {playListMixin, searchMixin} from 'common/js/mixin'
+
   export default {
     data () {
       return {
@@ -51,7 +52,7 @@
         query: ''
       }
     },
-    mixins: [playListMixin],
+    mixins: [playListMixin, searchMixin],
     components: {
       SearchBox,
       SearchList,
@@ -64,27 +65,14 @@
     },
     computed: {
       ...mapGetters([
-        'searchHistory'
       ]),
       shortcut () {
         return this.hotKey.concat(this.searchHistory)
       }
     },
     methods: {
-      addQuery (query) {
-        this.$refs.searchBox.setQuery(query)
-      },
-      onQueryChange (query) {
-        this.query = query
-      },
       showConfirm () {
         this.$refs.confirm.show()
-      },
-      blurInput () {
-        this.$refs.searchBox.blur()
-      },
-      saveSearch () {
-        this.saveSearchHistory(this.query)
       },
       handlePlayList (playlist) {
         const bottom = playlist.length > 0 ? '60px' : ''
@@ -102,8 +90,6 @@
         })
       },
       ...mapActions([
-        'saveSearchHistory',
-        'deleteSearchHistory',
         'clearSearchHistory'
       ])
     },
